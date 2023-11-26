@@ -10,11 +10,12 @@ Grille::Grille()
     this->largeur = 0;
 }
 
-Grille::Grille(int longueur, int largeur, std::string param)
+Grille::Grille(int longueur, int largeur,bool _tore, std::string param)
 {
     this->grid= {};
     this->longueur = longueur;
     this->largeur = largeur;
+    this->tore=_tore;
 
     //le paramètre est optionnel mais si il est définit il permet de choisir sa configuration
     if(param=="")
@@ -87,9 +88,14 @@ void Grille::changeCase(Case c, int posx, int posy)
     this->grid.at(posy).at(posx) = c;
 }
 
-std::vector<std::vector<Case>> Grille::getGrid()
+std::vector<std::vector<Case>> &Grille::getGrid()
 {
     return this->grid;
+}
+
+Case &Grille::getCase(int x,int y)
+{
+    return this->grid.at(y).at(x);
 }
 
 void Grille::nextIteration()
@@ -120,6 +126,12 @@ void Grille::nextIteration()
                 }
                 
             }
+            else if(this->tore)
+            {
+                if (this->grid.at(this->largeur-1).at(this->longueur-1).getStatus()){
+                    this->grid.at(i).at(j).setNbVoisins(this->grid.at(i).at(j).getNbVoisins()+1);
+                }
+            }
 
             if(i>0) //en haut
             { 
@@ -129,6 +141,12 @@ void Grille::nextIteration()
                 }
                 
             }
+            else if(this->tore)
+            {
+                if (this->grid.at(this->largeur-1).at(j).getStatus()){
+                    this->grid.at(i).at(j).setNbVoisins(this->grid.at(i).at(j).getNbVoisins()+1);
+                }
+            }
 
             if(i>0 && j<longueur-1) //en haut à droite
             { 
@@ -137,6 +155,12 @@ void Grille::nextIteration()
                     this->grid.at(i).at(j).setNbVoisins(this->grid.at(i).at(j).getNbVoisins()+1);
                 }
                 
+            }
+            else if(this->tore)
+            {
+                if (this->grid.at(this->largeur-1).at(0).getStatus()){
+                    this->grid.at(i).at(j).setNbVoisins(this->grid.at(i).at(j).getNbVoisins()+1);
+                }
             }
 
             if(j>0) //à gauche
@@ -148,6 +172,12 @@ void Grille::nextIteration()
                 }
                 
             }
+            else if(this->tore)
+            {
+                if (this->grid.at(i).at(this->longueur-1).getStatus()){
+                    this->grid.at(i).at(j).setNbVoisins(this->grid.at(i).at(j).getNbVoisins()+1);
+                }
+            }
 
             if(j<longueur-1) //à droite
             { 
@@ -156,6 +186,12 @@ void Grille::nextIteration()
                     this->grid.at(i).at(j).setNbVoisins(this->grid.at(i).at(j).getNbVoisins()+1);
                 }
                 
+            }
+            else if(this->tore)
+            {
+                if (this->grid.at(i).at(0).getStatus()){
+                    this->grid.at(i).at(j).setNbVoisins(this->grid.at(i).at(j).getNbVoisins()+1);
+                }
             }
 
             if(i<largeur-1 && j>0) //en bas à gauche
@@ -166,6 +202,12 @@ void Grille::nextIteration()
                 }
                 
             }
+            else if(this->tore)
+            {
+                if (this->grid.at(0).at(this->longueur-1).getStatus()){
+                    this->grid.at(i).at(j).setNbVoisins(this->grid.at(i).at(j).getNbVoisins()+1);
+                }
+            }
 
             if(i<largeur-1) //en bas
             { 
@@ -175,6 +217,12 @@ void Grille::nextIteration()
                 }
                 
             }
+            else if(this->tore)
+            {
+                if (this->grid.at(0).at(j).getStatus()){
+                    this->grid.at(i).at(j).setNbVoisins(this->grid.at(i).at(j).getNbVoisins()+1);
+                }
+            }
 
             if(i<largeur-1 && j<longueur-1) //en bas à droite
             { 
@@ -183,6 +231,12 @@ void Grille::nextIteration()
                     this->grid.at(i).at(j).setNbVoisins(this->grid.at(i).at(j).getNbVoisins()+1);
                 }
                 
+            }
+            else if(this->tore)
+            {
+                if (this->grid.at(0).at(0).getStatus()){
+                    this->grid.at(i).at(j).setNbVoisins(this->grid.at(i).at(j).getNbVoisins()+1);
+                }
             }
         }
     }
@@ -195,8 +249,8 @@ void Grille::nextIteration()
             
             Case &c = grid.at(k).at(l);
 
-            //si une case est morte et a 3 voisins
-            if(c.getNbVoisins()==3 && c.getStatus()==false)
+            //si une case a 3 voisins
+            if(c.getNbVoisins()==3)
             {
                 c.setStatus(true);
             }

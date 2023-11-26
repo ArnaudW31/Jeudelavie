@@ -2,7 +2,7 @@
 #define GRILLE_HPP
 #include <vector>
 #include <string>
-#include "Case.cpp"
+#include "Case.hpp"
 
 class Grille{
 
@@ -10,15 +10,18 @@ class Grille{
         std::vector<std::vector<Case>> grid;
         int longueur;
         int largeur;
+        bool tore;
     public:
 
         Grille();
 
-        Grille(int longueur, int largeur, std::string param="");
+        Grille(int longueur, int largeur, bool _tore, std::string param="");
 
         void changeCase(Case c, int posx,int posy);
 
-        std::vector<std::vector<Case>> getGrid();
+        std::vector<std::vector<Case>> &getGrid();
+
+        Case &getCase(int x, int y);
 
         void nextIteration();
 
