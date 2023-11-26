@@ -1,4 +1,4 @@
-#Jeu de la vie par WISSOCQ Arnaud
+# Jeu de la vie par WISSOCQ Arnaud
 
 Pour l'interface graphique en SFML:
 Pour avoir une grille vide, appuyez sur R (pour Reset),
